@@ -13,11 +13,10 @@ class OpenSeaClient():
         if self.api_key is not None:
             self.headers = {'X-API-KEY': self.api_key}
     
-    def build_url(self, params: dict) -> Tuple[bool, str]:
+    def build_url(self, params: dict, module: str) -> Tuple[bool, str]:
         owner = params.get("owner", None)
         if owner is None:
             return False, "Owner Cannot Be None"
-        module = params.get("modules", None)
         if module is None:
             return False, "Module Cannot Be None"
         order_by = params.get("order_by", "sale_date")
@@ -37,7 +36,7 @@ class OpenSeaClient():
             return False, response.json()
     
     def get_address_assets(self, params: dict) -> Tuple[bool, str, dict]:
-        did_pass, url = self.build_url(params)
+        did_pass, url = self.build_url(params, "assets")
         if did_pass is False:
             return did_pass, str, {}
         request_did_succeed, response = self.get(url)
