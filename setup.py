@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='openpython',
+    name='OpenPython',
     version='0.0.4',
     author='Gavin Newcomer',
     author_email='gjnprivate@gmail.com',
