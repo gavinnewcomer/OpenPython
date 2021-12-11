@@ -16,6 +16,6 @@ setuptools.setup(
         "Open Python": "https://github.com/gavinnewcomer/OpenPython/issues"
     },
     license='MIT',
-    packages=['OpenPython'],
+    packages=['openpython'],
     install_requires=['requests'],
 )
