@@ -35,11 +35,12 @@ class OpenSeaClient():
         else:
             return False, response.json()
     
-    def get_address_assets(self, params: dict) -> Tuple[bool, str, dict]:
+    def get_address_assets(self, params: dict) -> Tuple[bool, str, list]:
         did_pass, url = self.build_url(params, "assets")
         if did_pass is False:
             return did_pass, str, {}
         request_did_succeed, response = self.get(url)
+        response_parsed = response.get("assets")
         if request_did_succeed is False:
             return request_did_succeed, "request failed",response
         else:
