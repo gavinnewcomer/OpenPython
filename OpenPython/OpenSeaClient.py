@@ -8,7 +8,10 @@ class OpenSeaClient():
     def __init__(self):
         self.base_url = 'https://api.opensea.io/api/v1/'
         self.session = requests.Session()
-        self.api_key = os.environ['OpenSeaClient']
+        try:
+            self.api_key = os.environ['OpenSeaClient']
+        except:
+            self.api_key = ''
         self.headers = ''
         if self.api_key is not None:
             self.headers = {'X-API-KEY': self.api_key}
@@ -25,7 +28,7 @@ class OpenSeaClient():
         limit = abs(params.get("limit", 50))
         if limit > 50 or limit == 0:
             limit = 50
-        url = f'{self.base_url}{module}/?owner={owner}&order_by={order_by}&order_direction={order_direction}&offset={offset}&limit={limit}'
+        url = f'{self.base_url}{module}/?owner={owner}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
         return True, url
     
     def get(self, url: str) -> Tuple[bool, dict]:
