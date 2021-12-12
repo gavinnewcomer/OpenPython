@@ -36,10 +36,9 @@ class OpenSeaClient():
         if did_pass is False:
             return did_pass, str, {}
         request_did_succeed, response = self.get(url)
-        response_parsed = response.get("assets")
         if request_did_succeed is False:
             return request_did_succeed, "request failed",response
-        else:
-            return request_did_succeed, "success", response
+        response_parsed = response.get("assets")
+        return request_did_succeed, "success", response_parsed
         
 
