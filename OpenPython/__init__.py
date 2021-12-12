@@ -1,1 +1,1 @@
-from OpenSeaClient import OpenSeaClient
+from . import OpenSeaClient
