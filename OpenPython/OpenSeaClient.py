@@ -1,5 +1,5 @@
 import os
-from typing import Tuple
+from typing import Tuple, Union
 
 import requests
 
@@ -24,7 +24,7 @@ class OpenSeaClient():
         url = f'{self.base_url}{module}/?owner={owner}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
         return True, url
     
-    def get(self, url: str) -> Tuple[bool, dict]:
+    def get(self, url: str) -> Tuple[bool, Union[dict, list]]:
         response = self.session.get(url)
         if response.status_code == 200:
             return True, response.json()
@@ -34,11 +34,18 @@ class OpenSeaClient():
     def get_address_assets(self, params: dict) -> Tuple[bool, str, list]:
         did_pass, url = self.build_url(params, "assets")
         if did_pass is False:
-            return did_pass, str, {}
+            return did_pass, '', []
         request_did_succeed, response = self.get(url)
         if request_did_succeed is False:
             return request_did_succeed, "request failed",response
         response_parsed = response.get("assets")
         return request_did_succeed, "success", response_parsed
-        
-
+    
+    def get_owned_collections(self, params: dict) -> Tuple[bool, str, list]:
+        did_pass, url = self.build_url(params, "collections")
+        if did_pass is False:
+            return did_pass, url, []
+        request_did_succeed, response = self.get(url)
+        if request_did_succeed is False:
+            return request_did_succeed, "request failed", response
+        return request_did_succeed, "success", response
