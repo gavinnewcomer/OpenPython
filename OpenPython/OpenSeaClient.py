@@ -19,8 +19,9 @@ class OpenSeaClient():
         order_direction = params.get("order_direction", "desc")
         offset = params.get("offset", 0)
         limit = abs(params.get("limit", 50))
-        if limit > 50 or limit == 0:
-            limit = 50
+        if owner != "collections":
+            if limit > 50 or limit == 0:
+                limit = 50
         url = f'{self.base_url}{module}/?owner={owner}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
         return True, url
     
@@ -42,10 +43,19 @@ class OpenSeaClient():
         return request_did_succeed, "success", response_parsed
     
     def get_owned_collections(self, params: dict) -> Tuple[bool, str, list]:
-        did_pass, url = self.build_url(params, "collections")
-        if did_pass is False:
-            return did_pass, url, []
-        request_did_succeed, response = self.get(url)
-        if request_did_succeed is False:
-            return request_did_succeed, "request failed", response
-        return request_did_succeed, "success", response
+        params["offset"] = 0
+        params["limit"] = 300
+        agg_response = []
+        should_continue = True
+        while should_continue:
+            did_pass, url = self.build_url(params, "collections")
+            if did_pass is False:
+                return did_pass, url, []
+            request_did_succeed, response = self.get(url)
+            if request_did_succeed is False:
+                return request_did_succeed, "request failed", response
+            new_offset = len(response)
+            agg_response.append(response)
+            params["offset"] = new_offset
+            if new_offset == 0:
+                return request_did_succeed, "success", agg_response

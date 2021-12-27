@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='openpython',
-    version='0.0.8',
+    version='0.0.9',
     author='Gavin Newcomer',
     author_email='gjnprivate@gmail.com',
     description='OpenSea Python SDK',
