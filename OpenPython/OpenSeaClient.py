@@ -16,11 +16,11 @@ class OpenSeaClient():
         offset = params.get("offset", 0)
         limit = abs(params.get("limit", 50))
         if module == "collections":
-            query_params = f'&offset={str(offset)}&limit={str(limit)}'
+            query_params = f'asset_owner={params.get("owner", "")}&offset={str(offset)}&limit={str(limit)}'
             return query_params
         if limit > 50 or limit == 0:
             limit = 50
-        return f'&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
+        return f'owner={params.get("owner", "")}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
 
     def build_url(self, params: dict, module: str) -> Tuple[bool, str]:
         owner = params.get("owner", None)
@@ -29,7 +29,7 @@ class OpenSeaClient():
         if module is None:
             return False, "Module Cannot Be None"
         query_params = self.build_params(params=params, module=module)    
-        url = f'{self.base_url}{module}/?owner={owner}{query_params}'
+        url = f'{self.base_url}{module}/?{query_params}'
         return True, url
     
     def get(self, url: str) -> Tuple[bool, Union[dict, list]]:
