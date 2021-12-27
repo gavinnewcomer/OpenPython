@@ -20,7 +20,7 @@ class OpenSeaClient():
             return query_params
         if limit > 50 or limit == 0:
             limit = 50
-        return f'owner={params.get("owner", "")}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
+        return f'owner={params.get("owner", "")}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
 
     def build_url(self, params: dict, module: str) -> Tuple[bool, str]:
         owner = params.get("owner", None)
