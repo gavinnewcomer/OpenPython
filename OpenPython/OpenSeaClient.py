@@ -9,20 +9,27 @@ class OpenSeaClient():
         self.base_url = 'https://api.opensea.io/api/v1/'
         self.session = requests.Session()
     
+    def build_params(self, params: dict, module: str):
+        query_params = ''
+        order_by = params.get("order_by", "sale_date")
+        order_direction = params.get("order_direction", "desc")
+        offset = params.get("offset", 0)
+        limit = abs(params.get("limit", 50))
+        if module == "collections":
+            query_params = f'&offset={str(offset)}&limit={str(limit)}'
+            return query_params
+        if limit > 50 or limit == 0:
+            limit = 50
+        return f'&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
+
     def build_url(self, params: dict, module: str) -> Tuple[bool, str]:
         owner = params.get("owner", None)
         if owner is None:
             return False, "Owner Cannot Be None"
         if module is None:
             return False, "Module Cannot Be None"
-        order_by = params.get("order_by", "sale_date")
-        order_direction = params.get("order_direction", "desc")
-        offset = params.get("offset", 0)
-        limit = abs(params.get("limit", 50))
-        if owner != "collections":
-            if limit > 50 or limit == 0:
-                limit = 50
-        url = f'{self.base_url}{module}/?owner={owner}&order_by={order_by}&order_direction={order_direction}&offset={str(offset)}&limit={str(limit)}'
+        query_params = self.build_params(params=params, module=module)    
+        url = f'{self.base_url}{module}/?owner={owner}{query_params}'
         return True, url
     
     def get(self, url: str) -> Tuple[bool, Union[dict, list]]:
