@@ -61,6 +61,7 @@ class OpenSeaClient():
             request_did_succeed, response = self.get(url)
             if request_did_succeed is False:
                 return request_did_succeed, "request failed", response
+            response = response.get("collections", [])
             new_offset = len(response)
             agg_response.append(response)
             params["offset"] = new_offset
