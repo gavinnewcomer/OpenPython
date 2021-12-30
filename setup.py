@@ -1,21 +1,15 @@
-import setuptools
-
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
-setuptools.setup(
+from distutils.core import setup
+setup(
     name='openpython',
-    version='0.0.11',
+    version='0.0.1',
     author='Gavin Newcomer',
     author_email='gjnprivate@gmail.com',
     description='OpenSea Python SDK',
-    long_description=long_description,
-    long_description_content_type="text/markdown",
     url='https://github.com/gavinnewcomer/OpenPython',
-    project_urls = {
-        "Open Python": "https://github.com/gavinnewcomer/OpenPython/issues"
-    },
+    download_url='https://github.com/gavinnewcomer/OpenPython/archive/refs/tags/v0.0.1.tar.gz',
     license='MIT',
     packages=['openpython'],
-    install_requires=['requests'],
+    install_requires=[
+        'requests'
+    ]
 )
