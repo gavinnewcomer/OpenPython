@@ -2,5 +2,5 @@
 README
 setup.cfg
 setup.py
-openpython/OpenSeaClient.py
-openpython/__init__.py
+pyopensea/OpenSeaClient.py
+pyopensea/__init__.py

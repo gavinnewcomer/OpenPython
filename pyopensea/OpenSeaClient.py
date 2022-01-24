@@ -33,7 +33,9 @@ class OpenSeaClient():
         return True, url
     
     def get(self, url: str) -> Tuple[bool, Union[dict, list]]:
-        response = self.session.get(url)
+        response = self.session.get(url, headers={
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
+        })
         if response.status_code == 200:
             return True, response.json()
         else:
