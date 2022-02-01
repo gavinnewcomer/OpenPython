@@ -8,6 +8,10 @@ class OpenSeaClient():
     def __init__(self):
         self.base_url = 'https://api.opensea.io/api/v1/'
         self.session = requests.Session()
+        self.api_key = None
+        api_key = os.environ['OpenSeaApiKey']
+        if api_key is not None:
+            self.api_key = api_key
     
     def build_params(self, params: dict, module: str):
         query_params = ''
@@ -33,9 +37,9 @@ class OpenSeaClient():
         return True, url
     
     def get(self, url: str) -> Tuple[bool, Union[dict, list]]:
-        response = self.session.get(url, headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
-        })
+        response = self.session.get(url, headers=(
+            {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'} if self.api_key is None else {'X-API-KEY': self.api_key}
+        ))
         if response.status_code == 200:
             return True, response.json()
         else:
